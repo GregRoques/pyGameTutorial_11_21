@@ -2,6 +2,7 @@
 import pygame
 from Hero import Hero
 from badGuy import BadGuy
+from Arrow import Arrow
 
 # 2. Initialize Pygame
 pygame.init()
@@ -12,6 +13,7 @@ pygame_screen = pygame.display.set_mode(screen_size)
 
 theHero= Hero()
 theBadGuy = BadGuy()
+arrows =[]
 
 #set the title of the window that opens...
 pygame.display.set_caption("Hawkeye")
@@ -51,6 +53,10 @@ while game_on:
                 theHero.shouldMove("up")        
             elif event.key == 273:
                 theHero.shouldMove("down")     
+            elif event.key == 32:
+                #space bar...FIRE!!!
+                new_arrow = Arrow(theHero)
+                arrows.append(new_arrow)
 
         elif event.type == pygame.KEYUP:
             # The user pressed a key
@@ -75,6 +81,11 @@ while game_on:
     pygame_screen.blit(background_image,[0,0])
     theHero.draw_me()
     theBadGuy.update_me(theHero)
+
+    for arrow in arrows:
+        arrow.update_me()
+        pygame_screen.blit(arrow_image,[arrow.x, arrow.y])
+
     pygame_screen.blit(hero_image,[theHero.x, theHero.y])
     pygame_screen.blit(monster_image,[theBadGuy.x, theBadGuy.y])
     pygame.display.flip()
